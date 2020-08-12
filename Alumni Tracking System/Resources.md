@@ -24,9 +24,3 @@ Angular Resources
 2. Documentation of angular - https://angular.io/guide/setup-local
 
 ==========================================
-Git Resources
-==========================================
-
-https://www.eduonix.com/git-for-beginners
-
-==========================================
