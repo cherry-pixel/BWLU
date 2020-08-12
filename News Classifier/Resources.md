@@ -15,16 +15,16 @@ NLP Resources
 
 2. Github resources - https://github.com/Femme-js/NLP-CookBook
 
-Others Project Samples
+Other Project Samples
 =============================================
 
-1. Check Folder-O1
+1. O1
 
-2. Check Folder-O2
+2. O2
 
 3. https://colab.research.google.com/drive/1TNl6Fscj4eKSbrWykMgEX_3cD-N8Pin7?usp=sharing
 
-4. Check Folder-O4
+4. O4
 
 5. https://colab.research.google.com/drive/1lizNKWDO-I9WQd9jGK1OPMhvpxTqn20t?usp=sharing
 
