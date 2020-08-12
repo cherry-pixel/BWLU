@@ -5,12 +5,6 @@ Resources drive Link
 https://drive.google.com/drive/folders/1bOkg5yldChYhSF22_DNM-kT89TNwb4Hh?usp=sharing
 
 ==========================================
-Basics of Git
-==========================================
-
-VIDEO LINK : https://youtu.be/W-e3rJaYRm8
-
-==========================================
 NLP Resources
 ==========================================
 
