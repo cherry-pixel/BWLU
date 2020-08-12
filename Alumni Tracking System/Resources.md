@@ -23,4 +23,3 @@ Angular Resources
 
 2. Documentation of angular - https://angular.io/guide/setup-local
 
-==========================================
