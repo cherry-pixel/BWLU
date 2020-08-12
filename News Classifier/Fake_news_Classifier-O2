@@ -1,0 +1,640 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "[nltk_data] Downloading package stopwords to\n",
+      "[nltk_data]     C:\\Users\\sdey2\\AppData\\Roaming\\nltk_data...\n",
+      "[nltk_data]   Package stopwords is already up-to-date!\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(20800, 4)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>title</th>\n",
+       "      <th>author</th>\n",
+       "      <th>text</th>\n",
+       "      <th>label</th>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>id</th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>House Dem Aide: We Didn’t Even See Comey’s Let...</td>\n",
+       "      <td>Darrell Lucus</td>\n",
+       "      <td>House Dem Aide: We Didn’t Even See Comey’s Let...</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>FLYNN: Hillary Clinton, Big Woman on Campus - ...</td>\n",
+       "      <td>Daniel J. Flynn</td>\n",
+       "      <td>Ever get the feeling your life circles the rou...</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>Why the Truth Might Get You Fired</td>\n",
+       "      <td>Consortiumnews.com</td>\n",
+       "      <td>Why the Truth Might Get You Fired October 29, ...</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>15 Civilians Killed In Single US Airstrike Hav...</td>\n",
+       "      <td>Jessica Purkiss</td>\n",
+       "      <td>Videos 15 Civilians Killed In Single US Airstr...</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>Iranian woman jailed for fictional unpublished...</td>\n",
+       "      <td>Howard Portnoy</td>\n",
+       "      <td>Print \\nAn Iranian woman has been sentenced to...</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                                title              author  \\\n",
+       "id                                                                          \n",
+       "0   House Dem Aide: We Didn’t Even See Comey’s Let...       Darrell Lucus   \n",
+       "1   FLYNN: Hillary Clinton, Big Woman on Campus - ...     Daniel J. Flynn   \n",
+       "2                   Why the Truth Might Get You Fired  Consortiumnews.com   \n",
+       "3   15 Civilians Killed In Single US Airstrike Hav...     Jessica Purkiss   \n",
+       "4   Iranian woman jailed for fictional unpublished...      Howard Portnoy   \n",
+       "\n",
+       "                                                 text  label  \n",
+       "id                                                            \n",
+       "0   House Dem Aide: We Didn’t Even See Comey’s Let...      1  \n",
+       "1   Ever get the feeling your life circles the rou...      0  \n",
+       "2   Why the Truth Might Get You Fired October 29, ...      1  \n",
+       "3   Videos 15 Civilians Killed In Single US Airstr...      1  \n",
+       "4   Print \\nAn Iranian woman has been sentenced to...      1  "
+      ]
+     },
+     "execution_count": 39,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#imported libraries\n",
+    "import pandas as pd\n",
+    "\n",
+    "\n",
+    "import re\n",
+    "import nltk\n",
+    "nltk.download('stopwords')\n",
+    "from nltk.corpus import stopwords\n",
+    "from nltk.stem.porter import PorterStemmer\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "#reading the training dataset and converting it to dataframe object\n",
+    "dataframe=pd.read_csv('train.csv',index_col=0)\n",
+    "print(dataframe.shape)\n",
+    "dataframe.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>label</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>count</th>\n",
+       "      <td>20800.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>mean</th>\n",
+       "      <td>0.500625</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>std</th>\n",
+       "      <td>0.500012</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>min</th>\n",
+       "      <td>0.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25%</th>\n",
+       "      <td>0.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>50%</th>\n",
+       "      <td>1.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>75%</th>\n",
+       "      <td>1.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>max</th>\n",
+       "      <td>1.000000</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "              label\n",
+       "count  20800.000000\n",
+       "mean       0.500625\n",
+       "std        0.500012\n",
+       "min        0.000000\n",
+       "25%        0.000000\n",
+       "50%        1.000000\n",
+       "75%        1.000000\n",
+       "max        1.000000"
+      ]
+     },
+     "execution_count": 40,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "dataframe.describe()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Index(['title', 'author', 'text', 'label'], dtype='object')"
+      ]
+     },
+     "execution_count": 41,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "dataframe.columns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "id\n",
+       "0        1\n",
+       "1        0\n",
+       "2        1\n",
+       "3        1\n",
+       "4        1\n",
+       "        ..\n",
+       "20795    0\n",
+       "20796    0\n",
+       "20797    0\n",
+       "20798    1\n",
+       "20799    1\n",
+       "Name: label, Length: 20800, dtype: int64"
+      ]
+     },
+     "execution_count": 48,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "'''I have to classify by seeing the label hence label is my target feature.\n",
+    "   So I have to separate the feature columns from the input by dropping it and have to create a new dataframe\n",
+    "   from the target feature\n",
+    "\n",
+    "'''\n",
+    "target=dataframe.label\n",
+    "#general inputs\n",
+    "inputs=dataframe.drop('label',axis=1)\n",
+    "target\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "#first take a copy of the dataframe so that actual dataframe remain unchanged\n",
+    "\n",
+    "\n",
+    "copy_df=inputs.copy()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "title      558\n",
+       "author    1957\n",
+       "text        39\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#let's handle missing values of the columns\n",
+    "# first check how many items are null at beginning in each feature\n",
+    "copy_df.isnull().sum()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>title</th>\n",
+       "      <th>author</th>\n",
+       "      <th>text</th>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>id</th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>Life: Life Of Luxury: Elton John’s 6 Favorite ...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Ever wonder how Britain’s most iconic pop pian...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>Excerpts From a Draft Script for Donald Trump’...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Donald J. Trump is scheduled to make a highly ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>20</th>\n",
+       "      <td>News: Hope For The GOP: A Nude Paul Ryan Has J...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Email \\nSince Donald Trump entered the electio...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>23</th>\n",
+       "      <td>Massachusetts Cop’s Wife Busted for Pinning Fa...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Massachusetts Cop’s Wife Busted for Pinning Fa...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>31</th>\n",
+       "      <td>Israel is Becoming Pivotal to China’s Mid-East...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Country: Israel While China is silently playin...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>20745</th>\n",
+       "      <td>Thomas Frank Explores Whether Hillary Clinton ...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Thomas Frank Explores Whether Hillary Clinton ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>20768</th>\n",
+       "      <td>Osama bin Laden’s older brother rents out luxu...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Osama bin Laden’s older brother rents out luxu...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>20771</th>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Letsbereal</td>\n",
+       "      <td>DYN's Statement on Last Week's Botnet Attack h...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>20772</th>\n",
+       "      <td>NaN</td>\n",
+       "      <td>beersession</td>\n",
+       "      <td>Kinda reminds me of when Carter gave away the ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>20786</th>\n",
+       "      <td>Government Forces Advancing at Damascus-Aleppo...</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>#FROMTHEFRONT #MAPS 22.11.2016 - 1,361 views 5...</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>2515 rows × 3 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                                   title       author  \\\n",
+       "id                                                                      \n",
+       "6      Life: Life Of Luxury: Elton John’s 6 Favorite ...          NaN   \n",
+       "8      Excerpts From a Draft Script for Donald Trump’...          NaN   \n",
+       "20     News: Hope For The GOP: A Nude Paul Ryan Has J...          NaN   \n",
+       "23     Massachusetts Cop’s Wife Busted for Pinning Fa...          NaN   \n",
+       "31     Israel is Becoming Pivotal to China’s Mid-East...          NaN   \n",
+       "...                                                  ...          ...   \n",
+       "20745  Thomas Frank Explores Whether Hillary Clinton ...          NaN   \n",
+       "20768  Osama bin Laden’s older brother rents out luxu...          NaN   \n",
+       "20771                                                NaN   Letsbereal   \n",
+       "20772                                                NaN  beersession   \n",
+       "20786  Government Forces Advancing at Damascus-Aleppo...          NaN   \n",
+       "\n",
+       "                                                    text  \n",
+       "id                                                        \n",
+       "6      Ever wonder how Britain’s most iconic pop pian...  \n",
+       "8      Donald J. Trump is scheduled to make a highly ...  \n",
+       "20     Email \\nSince Donald Trump entered the electio...  \n",
+       "23     Massachusetts Cop’s Wife Busted for Pinning Fa...  \n",
+       "31     Country: Israel While China is silently playin...  \n",
+       "...                                                  ...  \n",
+       "20745  Thomas Frank Explores Whether Hillary Clinton ...  \n",
+       "20768  Osama bin Laden’s older brother rents out luxu...  \n",
+       "20771  DYN's Statement on Last Week's Botnet Attack h...  \n",
+       "20772  Kinda reminds me of when Carter gave away the ...  \n",
+       "20786  #FROMTHEFRONT #MAPS 22.11.2016 - 1,361 views 5...  \n",
+       "\n",
+       "[2515 rows x 3 columns]"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#now lets make a missing dataframe in which I can see all the rows with randomly distributed missing values\n",
+    "missing=copy_df[copy_df.isnull().any(axis=1)] #axis=1 because we need rows\n",
+    "missing"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "see I have 2515 rows which has null values"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 76,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "str"
+      ]
+     },
+     "execution_count": 76,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "X=inputs['title']\n",
+    "X_train,X_test,y_train,y_test=train_test_split(X,target,test_size=0.2,random_state=1)\n",
+    "type(X_train[0])\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "def data_qualityCheck():\n",
+    "    \n",
+    "    print(\"Checking data qualitites...\")\n",
+    "    print(X_train.isnull().sum())\n",
+    "    \n",
+    "    print(X_test.isnull().sum())\n",
+    "    print(\"check finished.\")\n",
+    "    \n",
+    "\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Checking data qualitites...\n",
+      "439\n",
+      "119\n",
+      "check finished.\n"
+     ]
+    }
+   ],
+   "source": [
+    "data_qualityCheck()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "\n",
+    "import string\n",
+    "PS = PorterStemmer()\n",
+    "corpus = []\n",
+    "for i in range(0, len(X_train)):\n",
+    "    \n",
+    "    \n",
+    "    text = re.sub('[^a-zA-Z0-9]', ' ',X_train[i])\n",
+    "\n",
+    "  \n",
+    "    text = text.translate(str.maketrans('', '', string.punctuation))\n",
+    "\n",
+    "  \n",
+    "    text = text.lower()\n",
+    "    text = text.split() \n",
+    "\n",
+    "  \n",
+    "    text_final = [PS.stem(word) for word in txt if not word in stopwords.words('english')]\n",
+    "    text_final = ' '.join(text_final)\n",
+    "    corpus.append(text_final)\n",
+    "\n",
+    "    \n",
+    "    \n",
+    "    \n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "    \n",
+    "  \n",
+    "\n",
+    " \n",
+    "  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
