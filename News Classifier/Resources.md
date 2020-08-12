@@ -1,3 +1,8 @@
+Workflow of the project
+=============================================
+
+https://docs.google.com/document/d/1QBVJF_BQiFULvVfg3R2joFmpnWnYdzTwaJvOY8XH4hg/edit?usp=sharing
+
 Resources drive Link
 =============================================
 
@@ -37,9 +42,3 @@ Kaggle Dataset
 =============================================
 
 https://www.kaggle.com/c/fake-news/data
-
-Workflow of the project
-=============================================
-
-https://docs.google.com/document/d/1QBVJF_BQiFULvVfg3R2joFmpnWnYdzTwaJvOY8XH4hg/edit?usp=sharing
-
