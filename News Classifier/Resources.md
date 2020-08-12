@@ -1,10 +1,8 @@
-=============================================
 Resources drive Link
 =============================================
 
 https://drive.google.com/drive/folders/1bOkg5yldChYhSF22_DNM-kT89TNwb4Hh?usp=sharing
 
-=============================================
 NLP Resources
 =============================================
 
@@ -12,7 +10,6 @@ NLP Resources
 
 2. Github resources - https://github.com/Femme-js/NLP-CookBook
 
-=============================================
 Others Project Samples
 =============================================
 
@@ -26,25 +23,21 @@ Others Project Samples
 
 5. https://colab.research.google.com/drive/1lizNKWDO-I9WQd9jGK1OPMhvpxTqn20t?usp=sharing
 
-=============================================
 Blog on fetching memes through APIs
 =============================================
 
 https://medium.com/analytics-vidhya/building-an-api-to-fetch-memes-using-python-and-flask-f0991a949be0
 
-=============================================
 Handling missing values
 =============================================
 
 VIDEO LINK : https://www.youtube.com/watch?v=6WDFfaYtN6s&list=PLZoTAELRMXVPwYGE2PXD3x0bfKnR0cJjN
 
-=============================================
 Kaggle Dataset
 =============================================
 
 https://www.kaggle.com/c/fake-news/data
 
-=============================================
 Workflow of the project
 =============================================
 
