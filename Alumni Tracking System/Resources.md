@@ -1,4 +1,3 @@
-==========================================
 Django Resources
 ==========================================
 
@@ -15,7 +14,6 @@ Full Course for Beginners - https://www.freecodecamp.org/news/python-django-cour
 
 6. Youtube - https://youtu.be/tUqUdu0Sjyc
 
-==========================================
 Angular Resources
 ==========================================
 
