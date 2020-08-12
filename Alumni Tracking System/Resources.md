@@ -22,4 +22,3 @@ Angular Resources
 1. Node n Angular installation process - https://youtu.be/1RIXiy0v-wM
 
 2. Documentation of angular - https://angular.io/guide/setup-local
-
